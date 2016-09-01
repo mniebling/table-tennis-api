@@ -9,14 +9,16 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "start": "nodemon index.js",
+    "provision": "node tasks/provision.js"
   },
   "author": "Mike Niebling",
   "license": "MIT",
   "dependencies": {
     "body-parser": "1.15.2",
     "express": "4.14.0",
-    "lodash": "4.15.0"
+    "lodash": "4.15.0",
+    "rethinkdb": "2.3.3"
   },
   "devDependencies": {
     "nodemon": "1.10.2"
