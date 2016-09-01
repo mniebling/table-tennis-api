@@ -12,7 +12,7 @@ function deletePlayer (request, response) {
   var player = _.find(players, { 'id': request.params.id })
 
   if (!player) {
-    reponse
+    response
       .status(404)
       .json(
         { message: 'No player matches that id.'
