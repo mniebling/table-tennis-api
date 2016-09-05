@@ -9,30 +9,67 @@ var params =
   , port: 28015
   }
 
+// Control flow
 rethink
   .connect(params)
-  .then(connection => {
-
-    // Check if the database exists
-    return rethink
-      .dbList()
-      .contains('tabletennis')
-      .run(connection)
-      .then(dbExists => {
-
-        if (dbExists) {
-          console.log('The `tabletennis` database already exists.')
-        }
-
-        // If it does not, we should create it
-        else {
-          return rethink
-            .dbCreate('tabletennis')
-            .run(connection)
-            .then(console.log) // Todo: wrap JSON.stringify
-        }
-      })
-
-  })
+  .bind({})
+  .then(bindConnection)
+  .then(createDatabase)
+  .then(createTables)
   .catch(console.error)
   .finally(process.exit)
+
+// As the first step in a promise series, attach the open connection to
+// the chain scope created by `bind({})`.
+function bindConnection (connection) {
+  this.connection = connection
+  return
+}
+
+// Create the `tabletennis` database if it does not already exist.
+function createDatabase () {
+
+  return rethink
+    .dbList()
+    .contains('tabletennis')
+    .run(this.connection)
+    .then(dbExists => {
+
+      if (dbExists) {
+        console.log('The `tabletennis` database already exists.')
+        return
+      }
+
+      else {
+        return rethink
+          .dbCreate('tabletennis')
+          .run(this.connection)
+          .then(console.log) // Todo: wrap JSON.stringify
+      }
+    })
+}
+
+// Create the necessary tables if they do not already exist.
+function createTables () {
+
+  return rethink
+    .db('tabletennis')
+    .tableList()
+    .contains('players')
+    .run(this.connection)
+    .then(tablesExist => {
+
+      if (tablesExist) {
+        console.log('The `players` table already exists.')
+        return
+      }
+
+      else {
+        return rethink
+          .db('tabletennis')
+          .tableCreate('players')
+          .run(this.connection)
+          .then(console.log) // Todo: wrap JSON.stringify
+      }
+    })
+}
