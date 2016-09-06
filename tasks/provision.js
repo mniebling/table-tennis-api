@@ -3,7 +3,7 @@ const rethink = require('rethinkdb')
 
 
 // Initialize database connection
-// Todo: refactor database communication into a separate module.
+// Todo: refactor database configuration into a separate module.
 var params =
   { host: 'localhost'
   , port: 28015
@@ -19,8 +19,8 @@ rethink
   .catch(console.error)
   .finally(process.exit)
 
-// As the first step in a promise series, attach the open connection to
-// the chain scope created by `bind({})`.
+// As the first step in the series of promises, attach the open connection to
+// the chain's `this` scope, which is created by `bind({})`.
 function bindConnection (connection) {
   this.connection = connection
   return
