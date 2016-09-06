@@ -2,17 +2,44 @@
 // POST '/v1/players'
 //
 // Creates a new player with the json posted in body.
+const rethink = require('rethinkdb')
 
-var players = require('./data.js')
 
+function createPlayer (request, response) {
 
-function updatePlayer (request, response) {
+  // Map
+  var player =
+    { firstName: request.body.firstName
+    , lastName: request.body.lastName
+    , avatarUrl: request.body.avatarUrl
+    }
 
-  var player = request.body
-  player.id = (players.length + 1).toString()
-  players.push(player)
+  // Validate
+  if (!player.firstName || !player.lastName) {
+    response
+      .status(404)
+      .json(
+        { message: 'You must provide firstName and lastName.'
+        , params: request.params
+        , path: request.path
+        }
+      )
 
-  response.json(player)
+    return
+  }
+
+  // Create
+  rethink
+    .db('tabletennis')
+    .table('players')
+    .insert(player)
+    .run(request._connection)
+    .then(console.log)
+    .catch(console.error)
+    .finally(() => {
+      request._connection.close() // Todo: close connection in middleware
+      response.json(player)
+    })
 }
 
-module.exports = updatePlayer
+module.exports = createPlayer
