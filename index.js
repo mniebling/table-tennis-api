@@ -9,22 +9,29 @@ var host = express()
 // Initialize middleware
 host.use(bodyParser.urlencoded({ extended: true }))
 host.use(bodyParser.json())
+host.use(createConnection)
 
-// Initialize database
-// Todo: refactor database communication into a separate module.
-var params =
-  { host: 'localhost'
-  , port: 28015
-  }
+// This middleware wraps each request to provide a handle to the RethinkDB
+// connection on the request object.
+function createConnection (request, response, next) {
 
-function connectionHandler (error, connection) {
-  if (error) {
-    throw error
-  }
-  return connection
+  // Todo: refactor database config into a separate module
+  var params =
+    { host: 'localhost'
+    , port: 28015
+    }
+
+  rethink
+    .connect(params)
+    .then(connection => {
+      request._connection = connection;
+      next();
+    })
+    // Todo: Create a concise error helper
+    .catch(error => {
+      response.status(500).send({ error: error.message })
+    });
 }
-
-var connection = rethink.connect(params, connectionHandler)
 
 // Start listening
 host.listen(8888, () => {
