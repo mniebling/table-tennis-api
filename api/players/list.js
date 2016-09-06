@@ -3,12 +3,29 @@
 //
 // Returns a list of players.
 
-var players = require('./data.js')
+const rethink = require('rethinkdb')
 
 
 function listPlayers (request, response) {
 
-  response.json(players)
+  rethink
+    .db('tabletennis')
+    .table('players')
+    .run(request._connection)
+    .then(cursor => {
+
+      console.log('GET players.')
+
+      cursor
+        .toArray()
+        .then(results => {
+          response.json(results) // Todo: paginate response
+        })
+    })
+    .catch(console.error) // Todo: return a 500 if something internal breaks
+    .finally(() => {
+      request._connection.close() // Todo: close connection in middleware
+    })
 }
 
 module.exports = listPlayers
