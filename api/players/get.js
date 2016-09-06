@@ -3,28 +3,39 @@
 //
 // Gets the player with the specified id.
 
-const _ = require('lodash')
-var players = require('./data.js')
+const rethink = require('rethinkdb')
 
 
 function getPlayer (request, response) {
 
-  var player = _.find(players, { 'id': request.params.id })
+  rethink
+    .db('tabletennis')
+    .table('players')
+    .get(request.params.id)
+    .run(request._connection)
+    .then(result => {
 
-  if (!player) {
-    response
-      .status(404)
-      .json(
-        { message: 'No player matches that id.'
-        , params: request.params
-        , path: request.path
-        }
-      )
+      console.log(`GET player id ${request.params.id} : ${result}`)
 
-    return
-  }
+      if (!result) {
+        response
+          .status(404)
+          .json(
+            { message: 'No player matches that id.'
+            , params: request.params
+            , path: request.path
+            }
+          )
 
-  response.json(player)
+        return
+      }
+
+      response.json(result)
+    })
+    .catch(console.error)
+    .finally(() => {
+      request._connection.close() // Todo: close connection in middleware
+    })
 }
 
 module.exports = getPlayer

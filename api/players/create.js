@@ -2,6 +2,7 @@
 // POST '/v1/players'
 //
 // Creates a new player with the json posted in body.
+
 const rethink = require('rethinkdb')
 
 

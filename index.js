@@ -24,7 +24,7 @@ function createConnection (request, response, next) {
   rethink
     .connect(params)
     .then(connection => {
-      request._connection = connection;
+      request._connection = connection; // Todo: rename this ._dbConnection
       next();
     })
     // Todo: Create a concise error helper
