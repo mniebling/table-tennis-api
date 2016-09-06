@@ -18,7 +18,7 @@ function createPlayer (request, response) {
   // Validate
   if (!player.firstName || !player.lastName) {
     response
-      .status(404)
+      .status(400)
       .json(
         { message: 'You must provide firstName and lastName.'
         , params: request.params
@@ -35,11 +35,13 @@ function createPlayer (request, response) {
     .table('players')
     .insert(player)
     .run(request._connection)
-    .then(console.log)
+    .then(result => {
+      console.log(result)
+      response.json(result) // Todo: should probably return a cleaner response
+    })
     .catch(console.error)
     .finally(() => {
       request._connection.close() // Todo: close connection in middleware
-      response.json(player)
     })
 }
 

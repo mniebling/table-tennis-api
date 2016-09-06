@@ -3,39 +3,51 @@
 //
 // Updates the player with the specified id.
 
-const _ = require('lodash')
-var players = require('./data.js')
+const rethink = require('rethinkdb')
 
 
 function updatePlayer (request, response) {
 
-  var player = _.find(players, { 'id': request.params.id })
+  // Map
+  //
+  // Todo: Should we require an update to provide _all_ fields on the player,
+  // or just the ones the client wishes to update? For now, we'll require all
+  // the required fields just like `update` does.
+  var player =
+    { firstName: request.body.firstName
+    , lastName: request.body.lastName
+    , avatarUrl: request.body.avatarUrl
+    }
 
-  if (!player) {
-    response
-      .status(404)
-      .json(
-        { message: 'No player matches that id.'
-        , params: request.params
-        , path: request.path
-        }
-      )
-  }
+    // Validate
+    if (!player.firstName || !player.lastName) {
+      response
+        .status(400)
+        .json(
+          { message: 'You must provide firstName and lastName.'
+          , params: request.params
+          , path: request.path
+          }
+        )
 
-  if (!_.isString(request.body.name)) {
-    response
-      .status(400)
-      .json(
-        { message: 'You must provide a String for the `name` property.'
-        , params: request.params
-        , path: request.path
-        }
-      )
-  }
+      return
+    }
 
-  player.name = request.body.name
-
-  response.json(player)
+  // Update
+  rethink
+    .db('tabletennis')
+    .table('players')
+    .get(request.params.id)
+    .update(player)
+    .run(request._connection)
+    .then(result => {
+      console.log(result)
+      response.json(result) // Todo: should probably return a cleaner response
+    })
+    .catch(console.error) // Todo: return 500 if something breaks
+    .finally(() => {
+      request._connection.close() // Todo: close connection in middleware
+    })
 }
 
 module.exports = updatePlayer
