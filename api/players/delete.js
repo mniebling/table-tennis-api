@@ -13,7 +13,7 @@ function deletePlayer (request, response) {
     .table('players')
     .get(request.params.id)
     .delete()
-    .run(request._connection)
+    .run(request._dbConnection)
     .then(result => {
 
       console.log(`DELETE player id ${request.params.id} : ${JSON.stringify(result)}`)
@@ -35,7 +35,7 @@ function deletePlayer (request, response) {
     })
     .catch(console.error)
     .finally(() => {
-      request._connection.close() // Todo: close connection in middleware
+      request._dbConnection.close() // Todo: close connection in middleware
     })
 }
 

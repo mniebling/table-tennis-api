@@ -11,7 +11,7 @@ function listPlayers (request, response) {
   rethink
     .db('tabletennis')
     .table('players')
-    .run(request._connection)
+    .run(request._dbConnection)
     .then(cursor => {
 
       console.log('GET players.')
@@ -24,7 +24,7 @@ function listPlayers (request, response) {
     })
     .catch(console.error) // Todo: return a 500 if something internal breaks
     .finally(() => {
-      request._connection.close() // Todo: close connection in middleware
+      request._dbConnection.close() // Todo: close connection in middleware
     })
 }
 

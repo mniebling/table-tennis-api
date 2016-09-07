@@ -34,14 +34,14 @@ function createPlayer (request, response) {
     .db('tabletennis')
     .table('players')
     .insert(player)
-    .run(request._connection)
+    .run(request._dbConnection)
     .then(result => {
       console.log(result)
       response.json(result) // Todo: should probably return a cleaner response
     })
     .catch(console.error)
     .finally(() => {
-      request._connection.close() // Todo: close connection in middleware
+      request._dbConnection.close() // Todo: close connection in middleware
     })
 }
 

@@ -12,7 +12,7 @@ function getPlayer (request, response) {
     .db('tabletennis')
     .table('players')
     .get(request.params.id)
-    .run(request._connection)
+    .run(request._dbConnection)
     .then(result => {
 
       console.log(`GET player id ${request.params.id} : ${result}`)
@@ -34,7 +34,7 @@ function getPlayer (request, response) {
     })
     .catch(console.error)
     .finally(() => {
-      request._connection.close() // Todo: close connection in middleware
+      request._dbConnection.close() // Todo: close connection in middleware
     })
 }
 
