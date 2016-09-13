@@ -6,32 +6,12 @@ const rethink = require('rethinkdb')
 // Create the Express instance
 var host = express()
 
-// Initialize middleware
+// Initialize built-in middleware
 host.use(bodyParser.urlencoded({ extended: true }))
 host.use(bodyParser.json())
-host.use(createConnection)
 
-// This middleware wraps each request to provide a handle to the RethinkDB
-// connection on the request object.
-function createConnection (request, response, next) {
-
-  // Todo: refactor database config into a separate module
-  var params =
-    { host: 'localhost'
-    , port: 28015
-    }
-
-  rethink
-    .connect(params)
-    .then(connection => {
-      request._dbConnection = connection;
-      next();
-    })
-    // Todo: Create a concise error helper
-    .catch(error => {
-      response.status(500).send({ error: error.message })
-    });
-}
+// Initialize custom middleware
+host.use(require('./middleware/create-connection'))
 
 // Start listening
 host.listen(8888, () => {
@@ -42,23 +22,23 @@ host.listen(8888, () => {
 // Todo: When there are more resources, register the routes in the pods.
 // https://nodejs.org/api/modules.html#modules_folders_as_modules
 host.get('/v1',
-  require('./api/root.js'))
+  require('./endpoints/list-endpoints'))
 
 
 host.get('/v1/players',
-  require('./api/players/list.js'))
+  require('./endpoints/players/list'))
 
 host.get('/v1/players/:id',
-  require('./api/players/get.js'))
+  require('./endpoints/players/get'))
 
 host.post('/v1/players',
-  require('./api/players/create.js'))
+  require('./endpoints/players/create'))
 
 host.post('/v1/players/:id',
-  require('./api/players/update.js'))
+  require('./endpoints/players/update'))
 
 host.delete('/v1/players/:id',
-  require('./api/players/delete.js'))
+  require('./endpoints/players/delete'))
 
 
 host.get('/*', (request, response) => {
