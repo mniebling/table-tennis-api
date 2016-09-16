@@ -10,7 +10,7 @@ var host = express()
 host.use(bodyParser.urlencoded({ extended: true }))
 host.use(bodyParser.json())
 
-// Initialize custom middleware
+// Open a db connection and attach it to the request object
 host.use(require('./middleware/create-connection'))
 
 // Start listening
@@ -45,3 +45,7 @@ host.get('/*', (request, response) => {
   // Todo: serve a static page?
   response.status(404).send('Not found.')
 })
+
+
+// Close the db connection that is attached to the request
+host.use(require('./middleware/close-connection'))

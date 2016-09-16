@@ -33,9 +33,6 @@ function getPlayer (request, response) {
       response.json(result)
     })
     .catch(console.error)
-    .finally(() => {
-      request._dbConnection.close() // Todo: close connection in middleware
-    })
 }
 
 module.exports = getPlayer

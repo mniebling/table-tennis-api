@@ -23,9 +23,6 @@ function listPlayers (request, response) {
         })
     })
     .catch(console.error) // Todo: return a 500 if something internal breaks
-    .finally(() => {
-      request._dbConnection.close() // Todo: close connection in middleware
-    })
 }
 
 module.exports = listPlayers

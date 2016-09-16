@@ -19,19 +19,19 @@ function updatePlayer (request, response) {
     , avatarUrl: request.body.avatarUrl
     }
 
-    // Validate
-    if (!player.firstName || !player.lastName) {
-      response
-        .status(400)
-        .json(
-          { message: 'You must provide firstName and lastName.'
-          , params: request.params
-          , path: request.path
-          }
-        )
+  // Validate
+  if (!player.firstName || !player.lastName) {
+    response
+      .status(400)
+      .json(
+        { message: 'You must provide firstName and lastName.'
+        , params: request.params
+        , path: request.path
+        }
+      )
 
-      return
-    }
+    return
+  }
 
   // Update
   rethink
@@ -45,9 +45,6 @@ function updatePlayer (request, response) {
       response.json(result) // Todo: should probably return a cleaner response
     })
     .catch(console.error) // Todo: return 500 if something breaks
-    .finally(() => {
-      request._dbConnection.close() // Todo: close connection in middleware
-    })
 }
 
 module.exports = updatePlayer

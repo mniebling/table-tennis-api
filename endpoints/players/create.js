@@ -40,9 +40,6 @@ function createPlayer (request, response) {
       response.json(result) // Todo: should probably return a cleaner response
     })
     .catch(console.error)
-    .finally(() => {
-      request._dbConnection.close() // Todo: close connection in middleware
-    })
 }
 
 module.exports = createPlayer

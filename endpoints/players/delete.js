@@ -34,9 +34,6 @@ function deletePlayer (request, response) {
       }
     })
     .catch(console.error)
-    .finally(() => {
-      request._dbConnection.close() // Todo: close connection in middleware
-    })
 }
 
 module.exports = deletePlayer
