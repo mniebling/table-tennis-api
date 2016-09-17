@@ -5,8 +5,8 @@ const rethink = require('rethinkdb')
 
 function closeConnection (request, response, next) {
 
-	request._dbConnection.close()
-	next()
+  request._dbConnection.close()
+  next()
 }
 
 module.exports = closeConnection
