@@ -1,9 +1,6 @@
-//
 // GET '/v1/players'
-//
-// Returns a list of players.
-
 const rethink = require('rethinkdb')
+const respond = require('./services/list.respond')
 
 
 function listPlayers (request, response) {
@@ -13,14 +10,9 @@ function listPlayers (request, response) {
     .table('players')
     .run(request._dbConnection)
     .then(cursor => {
-
-      console.log('GET players.')
-
       cursor
         .toArray()
-        .then(results => {
-          response.json(results) // Todo: paginate response
-        })
+        .then(result => respond(result, request, response))
     })
     .catch(console.error) // Todo: return a 500 if something internal breaks
 }
