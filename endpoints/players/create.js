@@ -1,44 +1,27 @@
-//
 // POST '/v1/players'
-//
-// Creates a new player with the json posted in body.
-
 const rethink = require('rethinkdb')
+const respondToBadRequest = require('../../utilities/respond-to-bad-request')
+const validate = require('./services/create.validate')
+const mapRequestToPlayer = require('./services/create.map')
+const respond = require('./services/create.respond')
 
 
 function createPlayer (request, response) {
 
-  // Map
-  var player =
-    { firstName: request.body.firstName
-    , lastName: request.body.lastName
-    , avatarUrl: request.body.avatarUrl
-    }
+  var requestErrors = validate(request)
 
-  // Validate
-  if (!player.firstName || !player.lastName) {
-    response
-      .status(400)
-      .json(
-        { message: 'You must provide firstName and lastName.'
-        , params: request.params
-        , path: request.path
-        }
-      )
-
-    return
+  if (requestErrors.length) {
+    return respondToBadRequest(requestErrors, request, response)
   }
 
-  // Create
+  var player = mapRequestToPlayer(request)
+
   rethink
     .db('tabletennis')
     .table('players')
     .insert(player)
     .run(request._dbConnection)
-    .then(result => {
-      console.log(result)
-      response.json(result) // Todo: should probably return a cleaner response
-    })
+    .then(result => respond(result, request, response))
     .catch(console.error)
 }
 
