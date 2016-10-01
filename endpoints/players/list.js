@@ -1,6 +1,6 @@
 // GET '/v1/players'
 const rethink = require('rethinkdb')
-const respond = require('./services/list.respond')
+const map = require('./services/list.map')
 
 
 function listPlayers (request, response) {
@@ -12,7 +12,14 @@ function listPlayers (request, response) {
     .then(cursor => {
       cursor
         .toArray()
-        .then(result => respond(result, request, response))
+        .then(dbResult => {
+
+          var output = map.result(dbResult)
+
+          return response
+            .status(output.code)
+            .json(output.body)
+        })
     })
     .catch(console.error) // Todo: return a 500 if something internal breaks
 }

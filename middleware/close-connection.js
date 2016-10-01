@@ -1,11 +1,11 @@
-// This middleware wraps each request to provide a handle to the RethinkDB
-// connection on the request object.
-const rethink = require('rethinkdb')
-
-
+// This middleware attaches an event handler to the request which closes the
+// database connection when the request is finished.
 function closeConnection (request, response, next) {
 
-  request._dbConnection.close()
+  request.on('end', () => {
+    request._dbConnection.close()
+  })
+
   next()
 }
 

@@ -1,50 +1,41 @@
-//
 // POST '/v1/players/:id'
-//
-// Updates the player with the specified id.
-
 const rethink = require('rethinkdb')
+const validate = require('./services/change.validate')
+const map = require('./services/update.map')
 
 
+// Todo: Should we require an update to provide _all_ fields on the player,
+// or just the ones the client wishes to update? For now, we'll require all
+// the required fields just like `create` does.
 function updatePlayer (request, response) {
 
-  // Map
-  //
-  // Todo: Should we require an update to provide _all_ fields on the player,
-  // or just the ones the client wishes to update? For now, we'll require all
-  // the required fields just like `update` does.
-  var player =
-    { firstName: request.body.firstName
-    , lastName: request.body.lastName
-    , avatarUrl: request.body.avatarUrl
-    }
+  var validationResult = validate(request, player)
 
-  // Validate
-  if (!player.firstName || !player.lastName) {
-    response
-      .status(400)
-      .json(
-        { message: 'You must provide firstName and lastName.'
-        , params: request.params
-        , path: request.path
-        }
-      )
-
-    return
+  if (validationResult) {
+    return response
+      .status(validationResult.code)
+      .json(validationResult.body)
   }
 
-  // Update
+
+  var player = map.request(request)
+
+
   rethink
     .db('tabletennis')
     .table('players')
-    .get(request.params.id)
-    .update(player)
+    .get(player.id)
+    .update(player, { returnChanges: true })
     .run(request._dbConnection)
-    .then(result => {
-      console.log(result)
-      response.json(result) // Todo: should probably return a cleaner response
+    .then(dbResult => {
+
+      var output = map.result(dbResult)
+
+      return response
+        .status(output.code)
+        .json(output.body)
     })
-    .catch(console.error) // Todo: return 500 if something breaks
+    .catch(console.error)
 }
 
 module.exports = updatePlayer

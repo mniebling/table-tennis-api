@@ -8,6 +8,11 @@ mapper.request = function (request) {
     , avatarUrl: request.body.avatarUrl
     }
 
+  // Update will have an `id`, create won't.
+  if (request.params.id) {
+    player.id = request.params.id
+  }
+
   return player
 }
 
@@ -16,8 +21,8 @@ mapper.result = function (dbResult) {
   // Todo: how to test that I didn't forget to pass { returnChanges: true } in
   // the update command? Otherwise the changes property does not exist.
   return (
-    { code: 201 // Created
-    , body: dbResult.changes[0]['new_val']
+    { code: 200
+    , body: dbResult.changes
     })
 }
 

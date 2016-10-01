@@ -1,24 +1,33 @@
 // GET '/v1/players/:id'
 const rethink = require('rethinkdb')
-const respondToBadRequest = require('../../utilities/respond-to-bad-request')
-const validate = require('./services/get.validate')
-const respond = require('./services/get.respond')
+const validate = require('./services/find.validate')
+const map = require('./services/get.map')
 
 
 function getPlayer (request, response) {
 
-  var requestErrors = validate(request)
+  var validationResult = validate(request)
 
-  if (requestErrors.length) {
-    return respondToBadRequest(requestErrors, request, response)
+  if (validationResult) {
+    return response
+      .status(validationResult.code)
+      .json(validationResult.body)
   }
+
 
   rethink
     .db('tabletennis')
     .table('players')
     .get(request.params.id)
     .run(request._dbConnection)
-    .then(result => respond(result, request, response))
+    .then(dbResult => {
+
+      var output = map.result(dbResult)
+
+      return response
+        .status(output.code)
+        .json(output.body)
+    })
     .catch(console.error)
 }
 

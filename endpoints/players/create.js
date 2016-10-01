@@ -1,27 +1,36 @@
 // POST '/v1/players'
 const rethink = require('rethinkdb')
-const respondToBadRequest = require('../../utilities/respond-to-bad-request')
-const validate = require('./services/create.validate')
-const mapRequestToPlayer = require('./services/create.map')
-const respond = require('./services/create.respond')
+const validate = require('./services/change.validate')
+const map = require('./services/create.map')
 
 
 function createPlayer (request, response) {
 
-  var requestErrors = validate(request)
+  var validationResult = validate(request)
 
-  if (requestErrors.length) {
-    return respondToBadRequest(requestErrors, request, response)
+  if (validationResult) {
+    return response
+      .status(validationResult.code)
+      .json(validationResult.body)
   }
 
-  var player = mapRequestToPlayer(request)
+
+  var player = map.request(request)
+
 
   rethink
     .db('tabletennis')
     .table('players')
-    .insert(player)
+    .insert(player, { returnChanges: true })
     .run(request._dbConnection)
-    .then(result => respond(result, request, response))
+    .then(dbResult => {
+
+      var output = map.result(dbResult)
+
+      return response
+        .status(output.code)
+        .json(output.body)
+    })
     .catch(console.error)
 }
 

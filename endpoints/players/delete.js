@@ -1,12 +1,19 @@
-//
 // DELETE '/v1/players/:id'
-//
-// Deletes the player with the specified id.
-
 const rethink = require('rethinkdb')
+const validate = require('./services/find.validate')
+const map = require('./services/delete.map')
 
 
 function deletePlayer (request, response) {
+
+  var validationResult = validate(request)
+
+  if (validationResult) {
+    return response
+      .status(validationResult.code)
+      .json(validationResult.body)
+  }
+
 
   rethink
     .db('tabletennis')
@@ -14,24 +21,13 @@ function deletePlayer (request, response) {
     .get(request.params.id)
     .delete()
     .run(request._dbConnection)
-    .then(result => {
+    .then(dbResult => {
 
-      console.log(`DELETE player id ${request.params.id} : ${JSON.stringify(result)}`)
+      var output = map.result(dbResult)
 
-      if (result.deleted === 0) {
-        response
-          .status(404)
-          .json(
-            { message: 'No player matches that id.'
-            , params: request.params
-            , path: request.path
-            }
-          )
-      }
-      else {
-        // Todo: just send status? or send message object?
-        response.status(200).send(`Player deleted: ${request.params.id}`)
-      }
+      return response
+        .status(output.code)
+        .json(output.body)
     })
     .catch(console.error)
 }
