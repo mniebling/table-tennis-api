@@ -10,6 +10,7 @@ describe('players/create.map.request', () => {
     var request = {}
     _.set(request, 'body.fullName', 'John Doe')
     _.set(request, 'body.nickname', 'Johnny')
+    _.set(request, 'body.phoneticName', 'John Dough')
     _.set(request, 'body.avatarUrl', 'https://www.foo.com/bar.jpg')
 
     var output = map.request(request)
@@ -17,6 +18,7 @@ describe('players/create.map.request', () => {
     expect(output).to.be.an('object')
     expect(output).to.have.property('fullName', 'John Doe')
     expect(output).to.have.property('nickname', 'Johnny')
+    expect(output).to.have.property('phoneticName', 'John Dough')
     expect(output).to.have.property('avatarUrl', 'https://www.foo.com/bar.jpg')
   })
 })

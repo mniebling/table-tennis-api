@@ -1,9 +1,9 @@
 const _ = require('lodash')
 const expect = require('chai').expect
-const validate = require('../change.validate')
+const validate = require('../create.validate')
 
 
-describe('players/change.validate', () => {
+describe('players/create.validate', () => {
 
   it('should return null if no failures', () => {
 

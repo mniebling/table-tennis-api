@@ -3,15 +3,12 @@ var mapper = {}
 mapper.request = function (request) {
 
   var player =
-    { fullName: request.body.fullName
+    { id: request.params.id
+    , fullName: request.body.fullName
     , nickname: request.body.nickname
+    , phoneticName: request.body.phoneticName
     , avatarUrl: request.body.avatarUrl
     }
-
-  // Update will have an `id`, create won't.
-  if (request.params.id) {
-    player.id = request.params.id
-  }
 
   return player
 }

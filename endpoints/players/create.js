@@ -1,6 +1,6 @@
 // POST '/v1/players'
 const rethink = require('rethinkdb')
-const validate = require('./services/change.validate')
+const validate = require('./services/create.validate')
 const map = require('./services/create.map')
 
 
