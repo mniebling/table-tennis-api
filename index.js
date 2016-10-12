@@ -18,8 +18,10 @@ app.use(require('./middleware/create-connection'))
 app.use(require('./middleware/close-connection'))
 
 // Start listening
-app.listen(8888, () => {
-  console.log('express definitely running at 8888')
+var port = process.env.PORT || 8888
+
+app.listen(port, () => {
+  console.log(`express definitely running at ${port}`)
 })
 
 // Routes
