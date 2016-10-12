@@ -17,5 +17,5 @@ For local database:
 
 Ubuntu server commands:
 
-1. Run DB in background: `rethinkdb --bind all &`
+1. Run DB in background: `rethinkdb --bind all --no-http-admin &`
 2. Bring it to foreground (to kill): `fg`

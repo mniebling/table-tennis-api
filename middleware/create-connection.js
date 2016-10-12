@@ -9,6 +9,8 @@ function createConnection (request, response, next) {
   var params =
     { host: process.env.DB_IP || 'localhost'
     , port: 28015
+    , user: process.env.DB_USERNAME || 'admin'
+    , password: process.env.DB_PASSWORD || ''
     }
 
   rethink
