@@ -7,7 +7,7 @@ function createConnection (request, response, next) {
 
   // Todo: refactor database config into a separate module
   var params =
-    { host: 'localhost'
+    { host: process.env.DB_IP || 'localhost'
     , port: 28015
     }
 

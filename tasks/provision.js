@@ -5,7 +5,7 @@ const rethink = require('rethinkdb')
 // Initialize database connection
 // Todo: refactor database configuration into a separate module.
 var params =
-  { host: 'localhost'
+  { host: process.env.DB_IP || 'localhost'
   , port: 28015
   }
 
