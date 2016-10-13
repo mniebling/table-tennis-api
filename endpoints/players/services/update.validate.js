@@ -1,6 +1,14 @@
 const _ = require('lodash')
 
 
+function idDidNotChange (request) {
+  if (request.body.id) {
+    return (request.body.id === request.params.id)
+  }
+  return true
+}
+
+
 function validateRequest (request) {
 
   var result = null
@@ -13,7 +21,7 @@ function validateRequest (request) {
       , test: !_.isEmpty(request.body.nickname)
       }
     , { message: 'Request parameter `id` cannot be changed.'
-      , test: (request.body.id === request.params.id)
+      , test: idDidNotChange(request)
       }
     ]
 

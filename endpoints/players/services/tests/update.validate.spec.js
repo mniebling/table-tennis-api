@@ -72,4 +72,16 @@ describe('players/update.validate', () => {
     expect(output.body.messages)
       .to.include('Request parameter `id` cannot be changed.')
   })
+
+	it('should be ok with omitting the `id` field', () => {
+
+    var request = {}
+    _.set(request, 'params.id', '1')
+    _.set(request, 'body.fullName', 'John Doe')
+    _.set(request, 'body.nickname', 'Johnny')
+
+    var output = validate(request)
+
+    expect(output).to.be.null
+  })
 })
