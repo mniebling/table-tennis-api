@@ -6,9 +6,16 @@ mapper.request = function (request) {
     { id: request.params.id
     , fullName: request.body.fullName
     , nickname: request.body.nickname
-    , phoneticNickname: request.body.phoneticNickname
-    , avatarUrl: request.body.avatarUrl
     }
+
+  // Todo: is there a more concise way to do this?
+  if (request.body.phoneticNickname) {
+    player.phoneticNickname = request.body.phoneticNickname
+  }
+
+  if (request.body.avatarUrl) {
+    player.avatarUrl = request.body.avatarUrl
+  }
 
   return player
 }

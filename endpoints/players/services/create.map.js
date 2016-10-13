@@ -5,8 +5,8 @@ mapper.request = function (request) {
   var player =
     { fullName: request.body.fullName
     , nickname: request.body.nickname
-    , phoneticNickname: request.body.phoneticNickname
-    , avatarUrl: request.body.avatarUrl
+    , phoneticNickname: request.body.phoneticNickname || ''
+    , avatarUrl: request.body.avatarUrl || ''
     }
 
   return player

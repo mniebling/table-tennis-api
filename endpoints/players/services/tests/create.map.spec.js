@@ -21,6 +21,21 @@ describe('players/create.map.request', () => {
     expect(output).to.have.property('phoneticNickname', 'John Dough')
     expect(output).to.have.property('avatarUrl', 'https://www.foo.com/bar.jpg')
   })
+
+  it('should map missing optional properties', () => {
+
+    var request = {}
+    _.set(request, 'body.fullName', 'John Doe')
+    _.set(request, 'body.nickname', 'Johnny')
+
+    var output = map.request(request)
+
+    expect(output).to.be.an('object')
+    expect(output).to.have.property('fullName', 'John Doe')
+    expect(output).to.have.property('nickname', 'Johnny')
+    expect(output).to.have.property('phoneticNickname', '')
+    expect(output).to.have.property('avatarUrl', '')
+  })
 })
 
 
