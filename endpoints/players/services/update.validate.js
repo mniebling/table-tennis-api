@@ -2,10 +2,19 @@ const _ = require('lodash')
 
 
 function idDidNotChange (request) {
+
   if (request.body.id) {
     return (request.body.id === request.params.id)
   }
   return true
+}
+
+function isPresentAndNotEmpty (body, propertyName) {
+
+  if (!body.hasOwnProperty(propertyName)) {
+    return true
+  }
+  return !_.isEmpty(body[propertyName])
 }
 
 
@@ -15,10 +24,10 @@ function validateRequest (request) {
 
   var validators =
     [ { message: 'Request parameter `fullName` cannot be empty.'
-      , test: !_.isEmpty(request.body.fullName)
+      , test: isPresentAndNotEmpty(request.body, 'fullName')
       }
     , { message: 'Request parameter `nickname` cannot be empty.'
-      , test: !_.isEmpty(request.body.nickname)
+      , test: isPresentAndNotEmpty(request.body, 'nickname')
       }
     , { message: 'Request parameter `id` cannot be changed.'
       , test: idDidNotChange(request)

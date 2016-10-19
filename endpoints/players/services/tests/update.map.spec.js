@@ -22,17 +22,17 @@ describe('players/update.map.request', () => {
     expect(output).to.have.property('avatarUrl', 'https://www.foo.com/bar.jpg')
   })
 
-  it('should not map missing optional properties', () => {
+  it('should not map missing properties', () => {
 
     var request = {}
     _.set(request, 'params.id', '1')
-    _.set(request, 'body.fullName', 'John Doe')
     _.set(request, 'body.nickname', 'Johnny')
 
     var output = map.request(request)
 
     expect(output).to.be.an('object')
     expect(output).not.to.have.property('avatarUrl')
+    expect(output).not.to.have.property('fullName')
     expect(output).not.to.have.property('phoneticNickname')
   })
 })

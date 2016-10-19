@@ -2,13 +2,17 @@ var mapper = {}
 
 mapper.request = function (request) {
 
-  var player =
-    { id: request.params.id
-    , fullName: request.body.fullName
-    , nickname: request.body.nickname
-    }
+  var player = { id: request.params.id }
 
-  // Todo: is there a more concise way to do this?
+  // Todo: think of a more concise/declarative way to do this
+  if (request.body.fullName) {
+    player.fullName = request.body.fullName
+  }
+
+  if (request.body.nickname) {
+    player.nickname = request.body.nickname
+  }
+
   if (request.body.phoneticNickname) {
     player.phoneticNickname = request.body.phoneticNickname
   }

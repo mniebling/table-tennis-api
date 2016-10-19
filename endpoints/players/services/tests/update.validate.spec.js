@@ -22,8 +22,7 @@ describe('players/update.validate', () => {
 
     var request = {}
     _.set(request, 'params.id', '1')
-    _.set(request, 'body.id', '1')
-    _.set(request, 'body.nickname', 'Johnny')
+    _.set(request, 'body.fullName', '')
 
     var output = validate(request)
 
@@ -40,8 +39,7 @@ describe('players/update.validate', () => {
 
     var request = {}
     _.set(request, 'params.id', '1')
-    _.set(request, 'body.id', '1')
-    _.set(request, 'body.fullName', 'John Doe')
+    _.set(request, 'body.nickname', '')
 
     var output = validate(request)
 
@@ -73,12 +71,11 @@ describe('players/update.validate', () => {
       .to.include('Request parameter `id` cannot be changed.')
   })
 
-	it('should be ok with omitting the `id` field', () => {
+  it('should allow omitted fields', () => {
 
     var request = {}
     _.set(request, 'params.id', '1')
-    _.set(request, 'body.fullName', 'John Doe')
-    _.set(request, 'body.nickname', 'Johnny')
+    _.set(request, 'body', {})
 
     var output = validate(request)
 
