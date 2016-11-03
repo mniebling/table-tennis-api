@@ -17,6 +17,9 @@ app.use(require('./middleware/create-connection'))
 // (this adds an event listener to the request `end` event to do so)
 app.use(require('./middleware/close-connection'))
 
+// Authenticate the request for a valid api key
+app.use(require('./middleware/authenticate'))
+
 // Start listening
 var port = process.env.PORT || 8888
 

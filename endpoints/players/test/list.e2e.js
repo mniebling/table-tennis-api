@@ -12,13 +12,14 @@ const serverUrl = 'http://localhost:8888/v1'
 
 describe('GET /players', () => {
 
-	it('should return a status code 200', () => {
+  it('should return a status code 200', () => {
 
-		return chai
-			.request(serverUrl)
-			.get('/players')
-			.then(response => {
-				expect(response).to.have.status(200)
-			})
-	})
+    return chai
+      .request(serverUrl)
+      .get('/players')
+      .send()
+      .then(response => {
+        expect(response).to.have.status(200)
+      })
+  })
 })
