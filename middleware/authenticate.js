@@ -18,7 +18,7 @@ function authenticate (request, response, next) {
 
   // If we made it this far, we have the right header and the right format.
   // The value looks like: "Bearer {guid}".
-  var apiKey = auth.split(' ')[1]
+  var apiKey = authHeader.split(' ')[1]
 
   rethink
     .db('tabletennis')
