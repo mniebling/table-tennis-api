@@ -1,3 +1,8 @@
+Documentation:
+
+http://docs.tabletennisapi.apiary.io
+
+
 For development:
 
 1. Install node & npm globally.
