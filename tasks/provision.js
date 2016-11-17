@@ -25,6 +25,8 @@ rethink
   // functions will get called in synchronous order.
   .then(_.partial(createTable, 'players'))
   .then(_.partial(createTable, 'api_keys'))
+  .then(_.partial(createTable, 'singles_matches'))
+  .then(_.partial(createTable, 'doubles_matches'))
 
   .then(closeConnection)
   .catch(console.error)
