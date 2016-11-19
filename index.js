@@ -30,10 +30,8 @@ app.listen(port, () => {
 // Routes
 // Todo: When there are more resources, register the routes in the pods.
 // https://nodejs.org/api/modules.html#modules_folders_as_modules
-app.get('/v1',
-  require('./endpoints/list-endpoints'))
 
-
+// Players
 app.get('/v1/players',
   require('./endpoints/players/list'))
 
@@ -49,9 +47,12 @@ app.post('/v1/players/:id',
 app.delete('/v1/players/:id',
   require('./endpoints/players/delete'))
 
-
+// Singles matches
 app.get('/v1/singles',
   require('./endpoints/singles/list'))
+
+app.get('/v1/singles/:id',
+  require('./endpoints/singles/get'))
 
 app.post('/v1/singles',
   require('./endpoints/singles/create'))
