@@ -57,6 +57,9 @@ app.get('/v1/singles/:id',
 app.post('/v1/singles',
   require('./endpoints/singles/create'))
 
+app.delete('/v1/singles/:id',
+  require('./endpoints/singles/delete'))
+
 
 app.get('/*', (request, response) => {
   // Todo: serve a static page?

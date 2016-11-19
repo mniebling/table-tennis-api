@@ -3,7 +3,7 @@ const expect = require('chai').expect
 const validate = require('../find.validate')
 
 
-describe('matches/find.validate', () => {
+describe('singles/find.validate', () => {
 
   it('should return null if no failures', () => {
 
