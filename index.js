@@ -50,6 +50,13 @@ app.delete('/v1/players/:id',
   require('./endpoints/players/delete'))
 
 
+app.get('/v1/singles',
+  require('./endpoints/singles/list'))
+
+app.post('/v1/singles',
+  require('./endpoints/singles/create'))
+
+
 app.get('/*', (request, response) => {
   // Todo: serve a static page?
   response.status(404).send('Not found.')

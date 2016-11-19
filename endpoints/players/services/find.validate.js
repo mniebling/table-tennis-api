@@ -1,12 +1,7 @@
 // Validation for methods that find a player.
 // --------------------------------------------------
 const _ = require('lodash')
-
-
-// Very naive guid checker
-function isGuid (param) {
-  return (param.length === 36)
-}
+const isGuid = require('../../../utilities/is-guid')
 
 
 function validateRequest (request) {
