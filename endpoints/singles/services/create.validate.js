@@ -4,7 +4,7 @@ const isIsoDateString = require('../../../utilities/is-iso-date-string')
 
 
 function isValidGames (games) {
-  return (_.isArray(games) && games.length === 5)
+  return (_.isArray(games) && games.length >= 3 && games.length <= 5)
 }
 
 
@@ -22,7 +22,7 @@ function validateRequest (request) {
     , { message: 'Request parameter `loser` must be a valid guid.'
       , test: isGuid(request.body.loser)
       }
-    , { message: 'Request parameter `games` must be an array of 5 games.'
+    , { message: 'Request parameter `games` must be an array of 3, 4 or 5 games.'
       , test: isValidGames(request.body.games)
       }
     , { message: 'Request parameter `startTime` must be an ISO-8601 datetime string.'

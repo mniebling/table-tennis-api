@@ -87,10 +87,10 @@ describe('singles/create.validate', () => {
     expect(output.body).to.have.property('messages').with.length(1)
 
     expect(output.body.messages)
-      .to.include('Request parameter `games` must be an array of 5 games.')
+      .to.include('Request parameter `games` must be an array of 3, 4 or 5 games.')
 
 
-    _.set(request, 'body.games', [{}, {}, {}]) // Only 3 games
+    _.set(request, 'body.games', [{}, {}, {}, {}, {}, {}]) // More than 5 games
 
     output = validate(request)
 
@@ -100,7 +100,7 @@ describe('singles/create.validate', () => {
     expect(output.body).to.have.property('messages').with.length(1)
 
     expect(output.body.messages)
-      .to.include('Request parameter `games` must be an array of 5 games.')
+      .to.include('Request parameter `games` must be an array of 3, 4 or 5 games.')
   })
 
   it('should reject bad startTime strings', () => {
