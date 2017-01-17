@@ -32,3 +32,4 @@ Ubuntu server commands:
 2. Run DB in background: `rethinkdb --bind all --no-http-admin &`
 3. Look for background processes: `ps -ef | grep rethink`
 4. Stop database: `killall -9 rethinkdb`
+5. Update packages: `sudo apt-get dist-upgrade`
