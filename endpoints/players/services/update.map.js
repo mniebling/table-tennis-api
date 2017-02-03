@@ -26,11 +26,18 @@ mapper.request = function (request) {
 
 mapper.result = function (dbResult) {
 
-  // Todo: how to test that I didn't forget to pass { returnChanges: true } in
-  // the update command? Otherwise the changes property does not exist.
+  var body;
+
+  if (dbResult.changes.length === 0) {
+    body = 'Player not found.'
+  }
+  else {
+    body = dbResult.changes
+  }
+
   return (
     { code: 200
-    , body: dbResult.changes
+    , body: body
     })
 }
 

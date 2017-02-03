@@ -40,17 +40,26 @@ describe('players/update.map.request', () => {
 
 describe('players/update.map.result', () => {
 
-  var dbResult = { changes: [] }
-
   it('should always return 200', () => {
 
+    var dbResult = { changes: [] }
     var code = map.result(dbResult).code
 
     expect(code).to.equal(200)
   })
 
-  it('should return the changes array', () => {
+  it('should return a message if the changes array is empty', () => {
 
+    var dbResult = { changes: [] }
+    var body = map.result(dbResult).body
+
+    expect(body).to.equal('Player not found.')
+  })
+
+  it('should return changes if there are any', () => {
+
+    var dbResult = {}
+    _.set(dbResult, 'changes', [{ foo: 'bar' }])
     var body = map.result(dbResult).body
 
     expect(body).to.equal(dbResult.changes)
