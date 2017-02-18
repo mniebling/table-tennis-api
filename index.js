@@ -10,6 +10,9 @@ var app = express()
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
+// Ensure that requests have the application/json content-type.
+app.use(require('./middleware/check-content-type'))
+
 // Open a db connection and attach it to the request object
 app.use(require('./middleware/create-connection'))
 
