@@ -8,8 +8,9 @@
     "url": "https://github.com/mniebling/table-tennis-api.git"
   },
   "scripts": {
+    "coverage": "browser-sync start --server 'coverage/lcov-report' --files 'coverage'",
     "e2e": "mocha '**/*.e2e.js'",
-    "unit-tests": "mocha '**/*.spec.js'",
+    "unit-tests": "istanbul cover --print none _mocha -- '**/*.spec.js'",
     "start": "nodemon index.js",
     "provision": "node tasks/provision.js"
   },
@@ -23,8 +24,10 @@
     "rethinkdb": "2.3.3"
   },
   "devDependencies": {
+    "browser-sync": "2.18.8",
     "chai": "3.5.0",
     "chai-http": "3.0.0",
+    "istanbul": "0.4.5",
     "mocha": "3.2.0",
     "nodemon": "1.11.0"
   }

@@ -8,8 +8,10 @@ For development:
 1. Install node & npm globally.
 2. Do `npm install` in root to get dependencies.
 3. Do `npm run start` to start the server (with hotloading on changes).
-4. Do `npm run --silent unit-tests` to run unit tests (without the NPM error spam
+4. Do `npm run unit-tests --silent` to run unit tests (without the NPM error spam
 if one of the tests fails).
+5. Do `npm run coverage` to see code coverage in a browser. When you run the unit
+tests, the coverage will update.
 
 
 For local database:
